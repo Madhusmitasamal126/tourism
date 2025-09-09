@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Hotels - Explore Odisha{% endblock %}
+
+{% block content %}
+
+<!-- 🔹 Hero Banner -->
+<section class="hero-banner position-relative text-white text-center d-flex align-items-center justify-content-center">
+  <img src="{% static 'images/hotel_banner.jpg' %}" alt="Hotels in Odisha"
+       class="w-100 h-100 position-absolute top-0 start-0 object-fit-cover hero-img">
+  <div class="overlay position-absolute top-0 start-0 w-100 h-100"></div>
+  <div class="position-relative z-10 container animate__animated animate__fadeInDown">
+    <h1 class="display-2 fw-bold mb-3 text-shadow">🏨 Explore Odisha Hotels</h1>
+    <p class="lead mb-4">Stay in comfort, luxury, and style. Choose from handpicked hotels across Odisha.</p>
+    <a href="#hotel-list" class="btn btn-lg btn-gradient shadow-lg rounded-pill px-5">✨ Find Hotels</a>
+  </div>
+</section>
+
+<!-- 🔹 Filter Section -->
+<div class="filter-bar py-3 sticky-top z-10">
+  <div class="container d-flex flex-wrap justify-content-center gap-3">
+    <select class="form-select rounded-pill shadow-sm">
+      <option>All Cities</option>
+      <option>Puri</option>
+      <option>Bhubaneswar</option>
+      <option>Cuttack</option>
+      <option>Gopalpur</option>
+    </select>
+    <select class="form-select rounded-pill shadow-sm">
+      <option>All Ratings</option>
+      <option>⭐⭐⭐⭐⭐</option>
+      <option>⭐⭐⭐⭐</option>
+      <option>⭐⭐⭐</option>
+    </select>
+    <input type="text" class="form-control rounded-pill shadow-sm" placeholder="🔍 Search hotels...">
+    <button class="btn btn-gradient rounded-pill px-4">Search</button>
+  </div>
+</div>
+
+<!-- 🔹 Featured Hotel -->
+<div class="container py-5">
+  <div class="row align-items-center bg-white rounded-4 shadow-lg p-4 feature-box">
+    <div class="col-lg-6">
+      <img src="{% static 'images/hotel1.jpg' %}" class="w-100 rounded-4 shadow-lg feature-img" alt="Featured Hotel">
+    </div>
+    <div class="col-lg-6">
+      <h2 class="fw-bold">🌟 Featured Stay: The Grand Puri Resort</h2>
+      <p class="text-muted">Experience luxury with sea-view rooms, infinity pool, and gourmet dining at Odisha’s most iconic resort.</p>
+      <ul class="list-unstyled mb-3">
+        <li>✅ Beachfront Location</li>
+        <li>✅ 5-Star Facilities</li>
+        <li>✅ Family & Couple Friendly</li>
+      </ul>
+      <a href="#" class="btn btn-gradient rounded-pill px-4">Book Now</a>
+    </div>
+  </div>
+</div>
+
+<!-- 🔹 Hotel List -->
+<div id="hotel-list" class="container py-5">
+  <h2 class="text-center mb-4 fw-bold">🏨 Choose Your Hotel</h2>
+  <div class="row g-4">
+    {% for hotel in hotels %}
+    <div class="col-lg-4 col-md-6">
+      <div class="hotel-card card border-0 h-100 overflow-hidden shadow-lg rounded-4">
+        <div class="position-relative overflow-hidden">
+          <img src="{{ hotel.image.url }}" class="card-img-top hotel-img" alt="{{ hotel.name }}">
+          {% if hotel.badge %}
+          <span class="badge bg-{{ hotel.badge_color }} position-absolute top-0 start-0 m-2 px-3 py-2">{{ hotel.badge }}</span>
+          {% endif %}
+        </div>
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title fw-bold">{{ hotel.name }}</h5>
+          <p class="card-text small text-muted">{{ hotel.description|truncatechars:100 }}</p>
+          <p class="text-muted mb-2">📍 {{ hotel.location }}</p>
+          <div class="mb-2 text-warning">
+            {% for i in "12345"|make_list %}
+              {% if forloop.counter <= hotel.rating %}⭐{% else %}☆{% endif %}
+            {% endfor %}
+          </div>
+          <p class="fw-bold text-success">💰 ₹{{ hotel.price }}</p>
+          <a href="{% url 'hotel_booking' hotel.id %}" class="btn btn-outline-gradient rounded-pill mt-auto">Book Now</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p class="col-12 text-center text-muted">No hotels found.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- 🔹 Testimonials -->
+<div class="testimonial-section py-5 text-white text-center">
+  <div class="overlay position-absolute top-0 start-0 w-100 h-100"></div>
+  <div class="container position-relative z-10">
+    <h2 class="mb-4 fw-bold">💬 What Travelers Say</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 glass-box">
+          <p>"Best stay in Puri! Sea view was breathtaking 🌊."</p>
+          <h6 class="fw-bold">– Rakesh, Delhi</h6>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 glass-box">
+          <p>"The hotel staff were super helpful. Loved Bhubaneswar trip!"</p>
+          <h6 class="fw-bold">– Priya, Mumbai</h6>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-4 rounded-4 glass-box">
+          <p>"Clean rooms, great food, and perfect location!"</p>
+          <h6 class="fw-bold">– Arjun, Bangalore</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 🔹 CTA -->
+<div class="cta-section text-center py-5">
+  <h2 class="mb-3 fw-bold text-white">✨ Plan Your Stay</h2>
+  <p class="mb-3 text-white-50">Pick the best hotel and make your Odisha trip unforgettable.</p>
+  <a href="/contact/" class="btn btn-lg btn-light rounded-pill shadow-lg">📍 Book Your Stay</a>
+</div>
+
+<!-- ✅ Custom Styles -->
+<style>
+.hero-banner { height: 70vh; position: relative; }
+.hero-img { object-fit: cover; }
+.overlay { background: linear-gradient(to bottom right, rgba(0,0,0,0.6), rgba(0,0,0,0.4)); }
+.text-shadow { text-shadow: 2px 2px 8px rgba(0,0,0,0.6); }
+
+.btn-gradient {
+  background: linear-gradient(45deg, #ff9800, #ff5722);
+  color: white;
+  border: none;
+}
+.btn-gradient:hover { background: linear-gradient(45deg, #ff5722, #e91e63); color: #fff; }
+.btn-outline-gradient {
+  border: 2px solid #ff5722;
+  color: #ff5722;
+}
+.btn-outline-gradient:hover {
+  background: #ff5722;
+  color: white;
+}
+
+.filter-bar {
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(8px);
+}
+
+.hotel-card { transition: all 0.4s ease; }
+.hotel-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+.hotel-img { transition: transform 0.4s ease; }
+.hotel-card:hover .hotel-img { transform: scale(1.1); }
+
+.feature-box { background: linear-gradient(135deg, #fdfdfd, #f5f5f5); }
+.feature-img { border: 4px solid #fff; }
+
+.testimonial-section {
+  background: url('{% static "images/testimonial_bg.jpg" %}') no-repeat center center/cover;
+  position: relative;
+}
+.glass-box {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+}
+
+.cta-section {
+  background: linear-gradient(135deg, #ff5722, #e91e63);
+}
+</style>
+
+{% endblock %}

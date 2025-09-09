@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Booking Confirmed - Explore Odisha{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-12 px-4 text-center">
+  <div class="bg-white shadow-xl rounded-2xl p-10 max-w-xl mx-auto">
+    <!-- Success Icon -->
+    <div class="mb-6">
+      <div class="w-20 h-20 mx-auto flex items-center justify-center bg-green-100 text-green-600 rounded-full shadow-inner">
+        <i class="bi bi-check-circle-fill text-4xl"></i>
+      </div>
+    </div>
+
+    <h2 class="text-3xl font-bold text-gray-800 mb-4">Booking Confirmed 🎉</h2>
+    <p class="text-gray-600 mb-6">
+      Thank you for booking your ride with <b>Explore Odisha</b>.  
+      We’ll contact you shortly with more details.
+    </p>
+
+    <a href="/" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-md transition">
+      ⬅ Back to Home
+    </a>
+  </div>
+</div>
+{% endblock %}

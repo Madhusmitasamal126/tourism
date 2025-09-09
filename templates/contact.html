@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Contact Us - Explore Odisha{% endblock %}
+
+{% block content %}
+
+<!-- 🔹 Hero Section -->
+<section class="relative bg-gradient-to-r from-yellow-600 to-yellow-700 text-white py-16">
+  <div class="container mx-auto text-center">
+    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Get in Touch</h1>
+    <p class="text-lg max-w-2xl mx-auto">
+      Have questions about your trip to Odisha? We’re here to help you.
+    </p>
+  </div>
+</section>
+
+<!-- 🔹 Contact Details -->
+<section class="py-12 bg-gray-50">
+  <div class="container mx-auto px-6 grid md:grid-cols-3 gap-8">
+
+    <!-- Phone -->
+    <div class="bg-white shadow-md rounded-2xl p-6 text-center border border-gray-100">
+      <i class="fa fa-phone text-yellow-600 text-3xl mb-4"></i>
+      <h3 class="text-xl font-semibold text-gray-800">Call Us</h3>
+      <p class="text-gray-600 mt-2">+91-9770546556</p>
+    </div>
+
+    <!-- Email -->
+    <div class="bg-white shadow-md rounded-2xl p-6 text-center border border-gray-100">
+      <i class="fa fa-envelope text-yellow-600 text-3xl mb-4"></i>
+      <h3 class="text-xl font-semibold text-gray-800">Email Us</h3>
+      <p class="text-gray-600 mt-2">exploreodisha@gmail.com</p>
+    </div>
+
+    <!-- Location -->
+    <div class="bg-white shadow-md rounded-2xl p-6 text-center border border-gray-100">
+      <i class="fa fa-map-marker text-yellow-600 text-3xl mb-4"></i>
+      <h3 class="text-xl font-semibold text-gray-800">Visit Us</h3>
+      <p class="text-gray-600 mt-2">Bhubaneswar, Odisha, India</p>
+    </div>
+  </div>
+</section>
+
+<!-- 🔹 Contact Form + Map -->
+<section class="py-16">
+  <div class="container mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+
+    <!-- Contact Form -->
+    <div class="bg-white shadow-lg rounded-2xl p-8 border border-gray-100">
+      <h2 class="text-2xl font-bold mb-6 text-gray-800">Send Us a Message</h2>
+      <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Your Name" required
+               class="w-full border border-gray-300 p-3 rounded-lg focus:border-yellow-600 focus:ring focus:ring-yellow-100 transition">
+        <input type="email" name="email" placeholder="Your Email" required
+               class="w-full border border-gray-300 p-3 rounded-lg focus:border-yellow-600 focus:ring focus:ring-yellow-100 transition">
+        <textarea name="message" rows="4" placeholder="Your Message" required
+                  class="w-full border border-gray-300 p-3 rounded-lg focus:border-yellow-600 focus:ring focus:ring-yellow-100 transition"></textarea>
+        <button type="submit"
+                class="w-full bg-gradient-to-r from-yellow-600 to-yellow-700 text-white py-3 rounded-lg font-semibold text-lg shadow-md hover:from-yellow-700 hover:to-yellow-800 transition">
+          ✨ Send Message
+        </button>
+      </form>
+    </div>
+
+    <!-- Google Map -->
+    <div class="rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+      <iframe src="https://www.google.com/maps/embed?pb=..."
+              width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

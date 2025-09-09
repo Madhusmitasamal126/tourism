@@ -1,0 +1,9 @@
+
+.dot{
+  width:35px;
+  height:35px;
+  position:absolute;
+  background: url(../images/tabb.png);
+  background-size: 100% 100%;
+  z-index:99999;
+}

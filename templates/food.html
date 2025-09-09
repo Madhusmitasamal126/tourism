@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Famous Food - Explore Odisha{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-gray-100">
+  <div class="container mx-auto px-4">
+    <h1 class="text-4xl font-bold text-center mb-10">🍲 Famous Food of Odisha</h1>
+
+    <!-- Food Cards -->
+    <div class="flex flex-wrap justify-center gap-6">
+      {% for food in foods %}
+      <div class="card shadow-lg rounded-lg" style="width: 18rem;">
+        <img src="{{ food.image.url }}" class="card-img-top w-full h-48 object-cover rounded-t-lg" alt="{{ food.name }}">
+        <div class="card-body p-4 text-center">
+          <h5 class="card-title text-xl font-semibold mb-2">{{ food.name }}</h5>
+          {% if food.description %}
+          <p class="card-text text-gray-600 text-sm mb-3">{{ food.description|truncatechars:100 }}</p>
+          {% endif %}
+          {% if food.price %}
+          <p class="text-green-600 font-bold mb-3">₹{{ food.price }}</p>
+          {% endif %}
+          <a href="{% url 'order_food' food.id %}" class="btn btn-primary bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            🛒 Order Now
+          </a>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-center text-gray-500 w-full">No food items found.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Optional Custom Styles -->
+<style>
+  .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+  }
+</style>
+{% endblock %}
