@@ -1,12 +1,11 @@
-# explore/models.py
 from django.db import models
 
-# Banner model for homepage slider
+# Banner for homepage
 class Banner(models.Model):
     title = models.CharField(max_length=200, blank=True)
     image = models.ImageField(upload_to='banners/')
-    link = models.URLField(blank=True, null=True)  # optional link when clicked
-    order = models.PositiveIntegerField(default=0)  # order in slider
+    link = models.URLField(blank=True, null=True)
+    order = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ['order']
@@ -15,18 +14,18 @@ class Banner(models.Model):
         return self.title or f"Banner {self.id}"
 
 
-# Tour Package model
+# Tour Package
 class TourPackage(models.Model):
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to='tour_packages/')
     description = models.TextField()
-    url = models.URLField(blank=True, null=True)  # details page link
+    url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return self.title
 
 
-# Items inside each Tour Package
+# Items inside Tour Package
 class PackageItem(models.Model):
     package = models.ForeignKey(TourPackage, on_delete=models.CASCADE, related_name='items')
     name = models.CharField(max_length=200)
@@ -36,29 +35,14 @@ class PackageItem(models.Model):
     def __str__(self):
         return f"{self.name} ({self.package.title})"
 
-# from django.db import models
 
+# Vehicles
 VEHICLE_CHOICES = [
     ('car', 'Sedan Car'),
     ('suv', 'SUV'),
     ('bike', 'Bike'),
     ('bus', 'Mini Bus'),
 ]
-
-class VehicleBooking(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone = models.CharField(max_length=15)
-    vehicle_type = models.CharField(max_length=20, choices=VEHICLE_CHOICES)
-    pickup_location = models.CharField(max_length=200)
-    drop_location = models.CharField(max_length=200, blank=True, null=True)
-    booking_date = models.DateField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.name} - {self.vehicle_type} ({self.booking_date})"
-
-from django.db import models
 
 BADGE_COLOR_CHOICES = [
     ('red', 'Red'),
@@ -73,7 +57,7 @@ class Vehicle(models.Model):
     description = models.CharField(max_length=255)
     image = models.ImageField(upload_to='vehicles/')
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    rating = models.PositiveIntegerField(default=0)  # 0 to 5
+    rating = models.PositiveIntegerField(default=0)
     slug = models.SlugField(unique=True)
     badge = models.CharField(max_length=50, blank=True, null=True)
     badge_color = models.CharField(max_length=20, choices=BADGE_COLOR_CHOICES, blank=True, null=True)
@@ -82,15 +66,28 @@ class Vehicle(models.Model):
         return self.name
 
 
-# from django.db import models
+class VehicleBooking(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    vehicle_type = models.CharField(max_length=20, choices=VEHICLE_CHOICES)
+    pickup_location = models.CharField(max_length=200)
+    drop_location = models.CharField(max_length=200, blank=True, null=True)
+    booking_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.name} - {self.vehicle_type} ({self.booking_date})"
+
+
+# Hotels
 class Hotel(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     location = models.CharField(max_length=200)
-    rating = models.IntegerField(default=3)  # 1 to 5
+    rating = models.IntegerField(default=3)
     image = models.ImageField(upload_to="hotels/")
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # Added price
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return self.name
@@ -104,10 +101,9 @@ class HotelBooking(models.Model):
 
     def __str__(self):
         return f"{self.name} booked {self.hotel.name}"
-    
 
-#    from django.db import models
 
+# Food
 class Food(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)

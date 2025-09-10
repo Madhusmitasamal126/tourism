@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<!-- 🔹 Banner (Hero Section with Overlay Text) -->
+<!-- 🔹 Hero Banner (with overlay and smooth animation) -->
 <section class="hero-banner">
   <ul class="bxslider">
     <li><img src="{% static 'images/banner.png' %}" /></li>
@@ -12,89 +12,114 @@
     <li><img src="{% static 'images/unnamed.jpg' %}" /></li>
     <li><img src="{% static 'images/banner_odisha.jpg' %}" /></li>
   </ul>
+  <div class="banner-overlay"></div>
   <div class="banner-text text-center">
-    <h1>Discover the Beauty of Odisha</h1>
+    <h1>✨ Discover the Beauty of Odisha</h1>
     <p>Temples, Beaches, Wildlife & Culture – All in One Journey</p>
     <a href="{% url 'road_trip' %}" class="btn-gradient">Start Your Journey</a>
   </div>
 </section>
 
 <!-- 🔹 Welcome Section -->
-<section class="welcome container my-5">
+<section class="welcome container my-5 py-5">
   <div class="row align-items-center">
-    <div class="col-md-6">
-      <h2 class="fw-bold text-primary">Welcome To Explore Odisha</h2>
-      <p>
+    <div class="col-md-6" data-aos="fade-right">
+      <h2 class="fw-bold text-primary mb-3">🌏 Welcome To Explore Odisha</h2>
+      <p class="text-muted">
         Odisha tourism is filled with ancient temples, monuments, wildlife sanctuaries,
         and natural beauty. From the Sun Temple at Konark to the Jagannath Temple in Puri,
         every corner of Odisha has a story to tell.
       </p>
-      <a href="{% url 'contact' %}" class="btn-gradient">Contact Us</a>
+      <a href="{% url 'contact' %}" class="btn-gradient mt-3">📩 Contact Us</a>
     </div>
-    <div class="col-md-6 text-center">
-      <img src="{% static 'images/odisha-2.png' %}" alt="Explore Odisha" class="img-fluid rounded-3 shadow">
+    <div class="col-md-6 text-center" data-aos="fade-left">
+      <img src="{% static 'images/odisha-2.png' %}" alt="Explore Odisha" 
+           class="img-fluid rounded-4 shadow-lg hover-scale">
     </div>
   </div>
 </section>
-<!-- Tour Packages Section -->
-<div class="row g-4">
-  {% for package in tour_packages %}
-  <div class="col-md-3">
-    <div class="card shadow h-100 text-center">
-      <img src="{{ package.image.url }}" class="card-img-top" alt="{{ package.title }}">
-      <div class="card-body">
-        <h5 class="card-title">{{ package.title }}</h5>
-        <p class="card-text">{{ package.description }}</p>
-        {% if package.url %}
-        <a href="{% url 'package_detail' package.id %}" class="btn-gradient">View Details</a>
 
-        {% else %}
-        <a href="#" class="btn-gradient">View Details</a>
-        {% endif %}
+<!-- 🔹 Tour Packages Section -->
+<section class="tour-packages py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center fw-bold text-dark mb-5">🌴 Popular Tour Packages</h2>
+    <div class="row g-4">
+      {% for package in tour_packages %}
+      <div class="col-md-3" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0 }}00">
+        <div class="card shadow-sm h-100 text-center package-card">
+          <div class="image-wrapper">
+            <img src="{{ package.image.url }}" class="card-img-top" alt="{{ package.title }}">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title fw-semibold">{{ package.title }}</h5>
+            <p class="card-text text-muted small">{{ package.description|truncatewords:20 }}</p>
+            {% if package.url %}
+            <a href="{% url 'package_detail' package.id %}" class="btn-gradient-sm">View Details</a>
+            {% else %}
+            <a href="#" class="btn-gradient-sm">View Details</a>
+            {% endif %}
+          </div>
+        </div>
       </div>
+      {% endfor %}
     </div>
   </div>
-  {% endfor %}
+</section>
 
 <!-- 🔹 JS for Banner Slider -->
 <script>
   $(document).ready(function(){
     $('.bxslider').bxSlider({
       auto: true,
-      pause: 3000,
-      speed: 800,
+      pause: 3500,
+      speed: 1000,
       mode: 'fade',
       captions: false
     });
   });
 </script>
 
+<!-- 🔹 CSS Styling -->
 <style>
 /* Hero Banner */
-.hero-banner {
-  position: relative;
-}
-.hero-banner img {
-  width: 100%;
-  height: 500px;
-  object-fit: cover;
+.hero-banner { position: relative; }
+.hero-banner img { width: 100%; height: 600px; object-fit: cover; }
+.banner-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.4);
 }
 .banner-text {
-  position: absolute;
-  top: 40%;
-  left: 50%;
+  position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  color: white;
-  text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
+  color: #fff; text-shadow: 2px 2px 10px rgba(0,0,0,0.7);
 }
-.banner-text h1 {
-  font-size: 3rem;
-  font-weight: bold;
+.banner-text h1 { font-size: 3.2rem; font-weight: 700; margin-bottom: 15px; }
+.banner-text p { font-size: 1.2rem; margin-bottom: 20px; }
+
+/* Buttons */
+.btn-gradient, .btn-gradient-sm {
+  background: linear-gradient(45deg, #fbbf24, #d97706);
+  color: white; font-weight: 600; border: none;
+  border-radius: 30px; padding: 12px 28px;
+  text-decoration: none; transition: 0.3s;
 }
-.banner-text p {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
+.btn-gradient-sm { padding: 8px 18px; font-size: 0.9rem; }
+.btn-gradient:hover, .btn-gradient-sm:hover {
+  background: linear-gradient(45deg, #d97706, #b45309);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
+
+/* Tour Packages */
+.package-card { border-radius: 16px; overflow: hidden; transition: 0.3s; }
+.package-card:hover { transform: translateY(-5px); box-shadow: 0 10px 24px rgba(0,0,0,0.15); }
+.image-wrapper { height: 200px; overflow: hidden; }
+.image-wrapper img { height: 100%; width: 100%; object-fit: cover; transition: 0.5s; }
+.package-card:hover img { transform: scale(1.1); }
+
+/* Hover Effect */
+.hover-scale { transition: 0.4s; }
+.hover-scale:hover { transform: scale(1.05); }
 </style>
 
 {% endblock %}

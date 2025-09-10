@@ -4,65 +4,78 @@
 {% block content %}
 <div class="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center px-4 py-12">
 
-  <div class="max-w-2xl w-full bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl overflow-hidden hover:shadow-3xl transition-shadow duration-500">
+  <div class="max-w-6xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2">
 
-    <!-- Hero Image -->
+    <!-- Left: Food Image + Overlay -->
     <div class="relative group">
-      <img src="{{ food.image.url }}" class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500" alt="{{ food.name }}">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+      <img src="{{ food.image.url }}" alt="{{ food.name }}"
+           class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6">
         <h2 class="text-4xl font-extrabold text-white drop-shadow-lg">{{ food.name }}</h2>
+        <div class="flex items-center gap-2 mt-2">
+          ⭐⭐⭐⭐☆ <span class="text-sm text-gray-200">(120 reviews)</span>
+        </div>
       </div>
     </div>
 
-    <!-- Food Info -->
-    <div class="p-8 text-center space-y-4">
-      <p class="text-gray-700 mb-2 text-lg">{{ food.description }}</p>
-      <p class="text-green-600 font-bold text-2xl mb-6">₹{{ food.price }}</p>
+    <!-- Right: Food Details & Order Form -->
+    <div class="p-8 md:p-10 flex flex-col justify-center space-y-6">
 
-      <!-- Order Form -->
-      <form method="POST" class="space-y-4 bg-white/70 backdrop-blur-sm p-6 rounded-2xl shadow-inner">
-        {% csrf_token %}
+      <!-- Food Info -->
+      <div class="space-y-4">
+        <p class="text-gray-600 text-lg leading-relaxed">{{ food.description }}</p>
 
-        <!-- Name & Email -->
-        <div class="flex flex-col sm:flex-row gap-3">
-          <div class="relative w-full">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              👤
-            </span>
-            <input type="text" name="name" placeholder="Your Name" required
-                   class="border p-3 pl-10 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-blue-400 transition shadow-sm">
-          </div>
-          <div class="relative w-full">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              📧
-            </span>
-            <input type="email" name="email" placeholder="Your Email" required
-                   class="border p-3 pl-10 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-blue-400 transition shadow-sm">
-          </div>
+        <!-- Delivery Info -->
+        <div class="flex gap-4 text-sm text-gray-600">
+          <span class="flex items-center gap-1">⏱ 30-40 min</span>
+          <span class="flex items-center gap-1">🚚 Free Delivery</span>
+          <span class="flex items-center gap-1">🔥 Popular</span>
         </div>
 
-        <!-- Quantity Selector -->
-        <div class="flex items-center justify-center gap-3 mt-2">
-          <button type="button" onclick="this.nextElementSibling.stepDown(); calculateTotal();"
-                  class="px-5 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition text-xl font-bold">−</button>
-          <input type="number" name="quantity" id="quantity" placeholder="Quantity" value="1" min="1" required
-                 class="border p-3 rounded-xl w-24 text-center focus:outline-none focus:ring-2 focus:ring-blue-400 transition shadow-inner">
-          <button type="button" onclick="this.previousElementSibling.stepUp(); calculateTotal();"
-                  class="px-5 py-2 rounded-full bg-gray-200 hover:bg-gray-300 transition text-xl font-bold">+</button>
+        <!-- Tags -->
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm">🧀 Cheese</span>
+          <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">🌿 Fresh Herbs</span>
+          <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm">🍅 Tomato</span>
         </div>
 
-        <p class="text-gray-600 font-medium mt-2 text-lg">Total: <span id="total">₹{{ food.price }}</span></p>
-
-        <!-- Submit Button -->
-        <button type="submit"
-                class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-full w-full hover:from-blue-600 hover:to-blue-700 transition font-semibold shadow-lg flex items-center justify-center gap-2 transform hover:-translate-y-1 hover:scale-105">
-          🛒 Place Order
-        </button>
-      </form>
-
-      <div class="mt-6 text-gray-500 text-sm">
-        By ordering, you agree to our <a href="#" class="text-blue-600 hover:underline">terms & conditions</a>.
+        <p class="text-green-600 font-extrabold text-3xl">₹{{ food.price }}</p>
       </div>
+
+      <!-- Sticky Order Box -->
+      <div class="bg-gray-50 p-6 rounded-2xl shadow-inner space-y-5">
+        <form method="POST" class="space-y-5">
+          {% csrf_token %}
+
+          <!-- Name & Email -->
+          <div class="flex flex-col sm:flex-row gap-4">
+            <input type="text" name="name" placeholder="Your Name" required class="input-field flex-1">
+            <input type="email" name="email" placeholder="Your Email" required class="input-field flex-1">
+          </div>
+
+          <!-- Quantity Selector -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <button type="button" onclick="quantityInput.stepDown(); calculateTotal();" class="quantity-btn">−</button>
+              <input type="number" name="quantity" id="quantity" value="1" min="1" required class="quantity-input">
+              <button type="button" onclick="quantityInput.stepUp(); calculateTotal();" class="quantity-btn">+</button>
+            </div>
+            <p class="text-xl font-semibold text-gray-800">
+              Total: <span id="total">₹{{ food.price }}</span>
+            </p>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn-gradient w-full md:w-auto">
+            🛒 Add to Cart
+          </button>
+        </form>
+      </div>
+
+      <!-- Terms -->
+      <p class="text-xs text-gray-500 text-center md:text-left">
+        By ordering, you agree to our <a href="#" class="text-blue-600 hover:underline">terms & conditions</a>.
+      </p>
     </div>
   </div>
 </div>
@@ -73,10 +86,62 @@
   const totalSpan = document.getElementById('total');
 
   function calculateTotal() {
-    const qty = parseInt(quantityInput.value);
+    const qty = parseInt(quantityInput.value || 1);
     totalSpan.textContent = `₹${(price * qty).toFixed(2)}`;
   }
 
   quantityInput.addEventListener('input', calculateTotal);
 </script>
+
+<style>
+/* Inputs */
+.input-field {
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  outline: none;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+.input-field:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 10px rgba(59,130,246,0.2);
+}
+
+/* Quantity */
+.quantity-input {
+  width: 60px;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+}
+.quantity-btn {
+  background: #f3f4f6;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+.quantity-btn:hover {
+  background: #e5e7eb;
+}
+
+/* Gradient Button */
+.btn-gradient {
+  background: linear-gradient(90deg, #ef4444, #f97316);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+</style>
 {% endblock %}
